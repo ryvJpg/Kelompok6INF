@@ -1213,81 +1213,277 @@ textarea:focus {
 }
 
 @media (max-width: 768px) {
+    /* Navbar Mobile */
     .navbar {
-        padding: 15px 20px;
+        padding: 12px 16px;
         flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .nav-left .logo {
+        font-size: 1.2em;
+    }
+    
+    .nav-left .logo span {
+        display: none;
     }
     
     .nav-center {
         order: 3;
         width: 100%;
         justify-content: center;
-        margin-top: 15px;
-        gap: 10px;
+        margin-top: 10px;
+        gap: 5px;
+        padding: 8px 0;
+        border-top: 1px solid var(--border-color);
     }
     
     .nav-link {
         padding: 8px 12px;
-        font-size: 0.9em;
+        font-size: 0.8em;
+        border-radius: 20px;
     }
     
-    .nav-link span {
-        display: none;
+    .nav-right {
+        gap: 10px;
     }
     
     .search-box {
         display: none;
     }
     
+    .theme-toggle {
+        width: 38px;
+        height: 38px;
+        font-size: 1em;
+    }
+    
+    /* Hero Mobile */
+    .hero-section {
+        min-height: auto;
+        padding: 100px 0 60px;
+    }
+    
+    .hero-content {
+        padding: 0 20px;
+        gap: 30px;
+    }
+    
+    .hero-badge {
+        font-size: 0.75em;
+        padding: 6px 12px;
+    }
+    
     .hero-title {
-        font-size: 2.5em;
+        font-size: 2em;
+        line-height: 1.2;
     }
     
     .hero-description {
-        font-size: 1em;
+        font-size: 0.95em;
+        margin-bottom: 25px;
     }
     
     .hero-buttons {
         flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-hero {
+        padding: 12px 24px;
+        font-size: 0.9em;
+        width: 100%;
+        justify-content: center;
     }
     
     .hero-stats {
-        flex-wrap: wrap;
-        gap: 20px;
+        gap: 25px;
+        margin-top: 30px;
     }
     
+    .stat-number {
+        font-size: 1.8em;
+    }
+    
+    .stat-label {
+        font-size: 0.8em;
+    }
+    
+    .hero-character {
+        max-height: 250px;
+    }
+    
+    .scroll-indicator {
+        display: none;
+    }
+    
+    /* Sections Mobile */
     .container {
-        padding: 0 20px;
+        padding: 0 16px;
     }
     
+    .content-section {
+        padding: 50px 0;
+    }
+    
+    .section-header {
+        margin-bottom: 30px;
+    }
+    
+    .section-title {
+        font-size: 1.5em;
+        gap: 10px;
+    }
+    
+    .section-subtitle {
+        font-size: 0.9em;
+    }
+    
+    /* Leaderboard Mobile */
+    .leaderboard-section {
+        padding: 50px 0;
+    }
+    
+    .leaderboard-item {
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .rank-badge {
+        width: 40px;
+        height: 40px;
+        font-size: 1em;
+    }
+    
+    .leaderboard-avatar {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .leaderboard-name {
+        font-size: 1em;
+    }
+    
+    .leaderboard-stats {
+        font-size: 0.8em;
+    }
+    
+    .leaderboard-rating {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+    }
+    
+    .rating-stars {
+        font-size: 1em;
+    }
+    
+    .rating-number {
+        font-size: 1.2em;
+    }
+    
+    /* People Cards Mobile */
     .people-list {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
     
+    .person-card {
+        padding: 20px;
+        border-radius: 16px;
+    }
+    
+    .person-avatar {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 15px;
+    }
+    
+    .person-info h3 {
+        font-size: 1.2em;
+    }
+    
+    .person-stats {
+        font-size: 0.85em;
+        gap: 12px;
+    }
+    
+    .person-actions {
+        gap: 10px;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+        font-size: 0.9em;
+        width: 100%;
+    }
+    
+    /* Modal Mobile */
     .modal-content {
-        width: 95%;
-        margin: 10% auto;
-        padding: 25px;
+        width: 94%;
+        margin: 5% auto;
+        padding: 20px;
+        border-radius: 16px;
+        max-height: 90vh;
+    }
+    
+    .modal-content h2 {
+        font-size: 1.4em;
+        padding-right: 30px;
+    }
+    
+    .close {
+        width: 32px;
+        height: 32px;
+        font-size: 24px;
+        right: 15px;
+        top: 15px;
+    }
+    
+    .rating-section h3,
+    .message-section h3 {
+        font-size: 1em;
     }
     
     .stars {
-        gap: 5px;
+        gap: 8px;
     }
     
     .star {
-        font-size: 2em;
+        font-size: 1.8em;
+    }
+    
+    textarea {
+        padding: 12px;
+        font-size: 0.95em;
     }
     
     .modal-actions {
         flex-direction: column;
+        gap: 10px;
     }
     
-    .btn {
-        width: 100%;
+    /* Profile Modal Mobile */
+    .profile-rating {
+        padding: 15px;
+    }
+    
+    .messages-list {
+        max-height: 250px;
+    }
+    
+    .message-item {
+        padding: 14px;
+    }
+    
+    /* Footer Mobile */
+    .footer {
+        padding: 40px 0 20px;
     }
     
     .footer-content {
         grid-template-columns: 1fr;
+        gap: 30px;
         text-align: center;
     }
     
@@ -1295,17 +1491,63 @@ textarea:focus {
         justify-content: center;
     }
     
+    .footer-brand p {
+        font-size: 0.9em;
+    }
+    
+    .footer-links h4,
+    .footer-team h4 {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+    
     .footer-links a {
         justify-content: center;
+        font-size: 0.9em;
+        padding: 6px 0;
     }
     
-    .leaderboard-item {
-        flex-wrap: wrap;
+    .footer-bottom {
+        padding-top: 20px;
+        font-size: 0.85em;
     }
     
-    .leaderboard-stats {
-        flex-direction: column;
-        gap: 5px;
+    .project-info {
+        margin-top: 15px;
+        padding-top: 15px;
+    }
+    
+    .project-info p {
+        font-size: 0.8em;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 380px) {
+    .hero-title {
+        font-size: 1.6em;
+    }
+    
+    .hero-stats {
+        gap: 15px;
+    }
+    
+    .stat-number {
+        font-size: 1.5em;
+    }
+    
+    .nav-link {
+        padding: 6px 10px;
+        font-size: 0.75em;
+    }
+    
+    .person-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .star {
+        font-size: 1.5em;
     }
 }
 
