@@ -3,56 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kelompok 6 inf</title>
+    <title>Kelompok 6 INF</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+    
     <!-- Navigation Header -->
     <nav class="navbar">
         <div class="nav-left">
-            <img src="images/icon-1.png" alt="Profile" class="nav-icon">
-            <img src="images/icon-2.png" alt="Add" class="nav-icon">
+            <div class="logo">
+                <i class="fas fa-star"></i>
+                <span>RateUs</span>
+            </div>
         </div>
         <div class="nav-center">
-            <a href="#" class="nav-link active">Home</a>
+            <a href="#" class="nav-link active" data-section="home">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="#leaderboard" class="nav-link" data-section="leaderboard">
+                <i class="fas fa-trophy"></i> Leaderboard
+            </a>
+            <a href="#peopleSection" class="nav-link" data-section="people">
+                <i class="fas fa-users"></i> Daftar
+            </a>
         </div>
         <div class="nav-right">
-            <!-- Navigation buttons removed -->
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari nama...">
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-background"></div>
+    <section class="hero-section" id="home">
+        <div class="hero-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
         <div class="hero-content">
             <div class="hero-left">
-                <div class="hero-logo">RATING SYSTEM</div>
-                <h1 class="hero-title">Kasih Penilaian & Pesan</h1>
-                <p class="hero-description">Sistem untuk memberikan rating dan pesan kepada orang-orang.</p>
-                <button class="btn-hero" onclick="scrollToPeople()">Mulai Sekarang</button>
-                <div class="hero-indicators">
-                    <span class="indicator active"></span>
-                    <span class="indicator"></span>
-                    <span class="indicator"></span>
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i>
+                    RATING SYSTEM
+                </div>
+                <h1 class="hero-title">
+                    <span class="gradient-text">Kasih Penilaian</span>
+                    <br>& Pesan
+                </h1>
+                <p class="hero-description">Sistem untuk memberikan rating dan pesan kepada orang-orang di kelompok 6.</p>
+                <div class="hero-buttons">
+                    <button class="btn-hero btn-primary-hero" onclick="scrollToPeople()">
+                        <i class="fas fa-rocket"></i> Mulai Sekarang
+                    </button>
+                    <button class="btn-hero btn-secondary-hero" onclick="scrollToLeaderboard()">
+                        <i class="fas fa-trophy"></i> Lihat Leaderboard
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalPeople">6</span>
+                        <span class="stat-label">Anggota</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalRatings">0</span>
+                        <span class="stat-label">Rating</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalMessages">0</span>
+                        <span class="stat-label">Pesan</span>
+                    </div>
                 </div>
             </div>
             <div class="hero-right">
-                <img src="images/hero-character-removebg-preview.png" alt="Hero Character" class="hero-character">
+                <div class="hero-image-wrapper">
+                    <img src="images/hero-character-removebg-preview.png" alt="Hero Character" class="hero-character">
+                    <div class="hero-glow"></div>
+                </div>
             </div>
         </div>
-        <button class="hero-nav hero-nav-left">‹</button>
-        <button class="hero-nav hero-nav-right">›</button>
+        <div class="scroll-indicator" onclick="scrollToPeople()">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Leaderboard Section -->
+    <section class="leaderboard-section" id="leaderboard">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-trophy"></i> Leaderboard
+                </h2>
+                <p class="section-subtitle">Top rated berdasarkan rating tertinggi</p>
+            </div>
+            <div class="leaderboard-container" id="leaderboardList">
+                <!-- Leaderboard items akan dimuat di sini -->
+            </div>
+        </div>
     </section>
 
     <!-- Main Content -->
     <div class="container">
         <div class="content-section" id="peopleSection">
-            <h2 class="section-title">Daftar Orang</h2>
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-users"></i> Daftar Orang
+                </h2>
+                <p class="section-subtitle">Pilih orang dan berikan rating serta pesan</p>
+            </div>
             <div class="people-list" id="peopleList">
                 <!-- Daftar orang akan dimuat di sini -->
             </div>
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <p>Tidak ada hasil yang ditemukan</p>
+            </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-star"></i>
+                        <span>RateUs</span>
+                    </div>
+                    <p>Sistem rating dan pesan untuk Kelompok 6 Informatika</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#home"><i class="fas fa-home"></i> Home</a>
+                    <a href="#leaderboard"><i class="fas fa-trophy"></i> Leaderboard</a>
+                    <a href="#peopleSection"><i class="fas fa-users"></i> Daftar</a>
+                </div>
+                <div class="footer-team">
+                    <h4>Kelompok 6</h4>
+                    <p>Jihan, Ahmad, Syifa, Bima, Azkel, Ryu</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Kelompok 6 INF. All rights reserved.</p>
+                <div class="project-info">
+                    <p>Website ini dibuat sebagai tugas inf ryu</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Modal untuk Rating dan Pesan -->
     <div class="modal" id="ratingModal">
