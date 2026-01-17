@@ -1,102 +1,214 @@
 """
-Script untuk menghapus background dari gambar menggunakan rembg
-Install dependencies: pip install rembg pillow
+RateUs Flask Application
+Backend API for rating system with persistent database storage
 """
 
+from flask import Flask, request, jsonify, send_from_directory
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+from datetime import datetime
+import json
 import os
-from rembg import remove
-from PIL import Image
-import glob
 
-def remove_background(input_path, output_path):
-    """
-    Menghapus background dari gambar dan menyimpan sebagai PNG transparan
-    
-    Args:
-        input_path: Path ke file gambar input (JPG/PNG)
-        output_path: Path ke file output (PNG dengan transparan)
-    """
+app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
+
+# Database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rateus.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# Database Models
+class Person(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    avatar = db.Column(db.String(200), nullable=False)
+    ratings = db.relationship('Rating', backref='person', lazy=True, cascade='all, delete-orphan')
+    messages = db.relationship('Message', backref='person', lazy=True, cascade='all, delete-orphan')
+
+class Rating(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Initialize database and seed data
+def init_db():
+    with app.app_context():
+        db.create_all()
+
+        # Check if people already exist
+        if Person.query.count() == 0:
+            # Seed initial people data
+            people_data = [
+                {"id": 1, "name": "Jihan", "avatar": "images/avatars/avatar-1.png"},
+                {"id": 2, "name": "Ahmad", "avatar": "images/avatars/avatar-2.png"},
+                {"id": 3, "name": "Syifa", "avatar": "images/avatars/avatar-3.png"},
+                {"id": 4, "name": "Bima", "avatar": "images/avatars/avatar-4.png"},
+                {"id": 5, "name": "Azkel", "avatar": "images/avatars/avatar-5.png"},
+                {"id": 6, "name": "Ryu", "avatar": "images/hero-character-removebg-preview.png"}
+            ]
+
+            for person_data in people_data:
+                person = Person(
+                    id=person_data["id"],
+                    name=person_data["name"],
+                    avatar=person_data["avatar"]
+                )
+                db.session.add(person)
+
+            db.session.commit()
+            print("Database initialized with people data")
+
+# API Endpoints
+@app.route('/api/people', methods=['GET'])
+def get_people():
+    """Get all people"""
+    people = Person.query.all()
+    return jsonify([{
+        'id': person.id,
+        'name': person.name,
+        'avatar': person.avatar
+    } for person in people])
+
+@app.route('/api/ratings/<int:person_id>', methods=['GET'])
+def get_ratings(person_id):
+    """Get all ratings for a specific person"""
+    ratings = Rating.query.filter_by(person_id=person_id).all()
+    return jsonify([{
+        'id': rating.id,
+        'rating': rating.rating,
+        'timestamp': rating.timestamp.isoformat()
+    } for rating in ratings])
+
+@app.route('/api/messages/<int:person_id>', methods=['GET'])
+def get_messages(person_id):
+    """Get all messages for a specific person"""
+    messages = Message.query.filter_by(person_id=person_id).order_by(Message.timestamp.desc()).all()
+    return jsonify([{
+        'id': message.id,
+        'message': message.message,
+        'rating': message.rating,
+        'timestamp': message.timestamp.isoformat()
+    } for message in messages])
+
+@app.route('/api/ratings', methods=['POST'])
+def submit_rating():
+    """Submit a new rating and message"""
+    data = request.get_json()
+
+    if not data or 'person_id' not in data or 'rating' not in data or 'message' not in data:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    person_id = data['person_id']
+    rating_value = data['rating']
+    message_text = data['message']
+
+    # Validate rating range
+    if not (1 <= rating_value <= 5):
+        return jsonify({'error': 'Rating must be between 1 and 5'}), 400
+
+    # Check if person exists
+    person = Person.query.get(person_id)
+    if not person:
+        return jsonify({'error': 'Person not found'}), 404
+
+    # Create rating and message
+    new_rating = Rating(person_id=person_id, rating=rating_value)
+    new_message = Message(person_id=person_id, message=message_text, rating=rating_value)
+
+    db.session.add(new_rating)
+    db.session.add(new_message)
+    db.session.commit()
+
+    return jsonify({
+        'message': 'Rating and message submitted successfully',
+        'rating_id': new_rating.id,
+        'message_id': new_message.id
+    }), 201
+
+@app.route('/api/stats', methods=['GET'])
+def get_stats():
+    """Get overall statistics"""
+    total_people = Person.query.count()
+    total_ratings = Rating.query.count()
+    total_messages = Message.query.count()
+
+    return jsonify({
+        'total_people': total_people,
+        'total_ratings': total_ratings,
+        'total_messages': total_messages
+    })
+
+@app.route('/api/migrate', methods=['POST'])
+def migrate_data():
+    """Migrate data from localStorage format to database"""
+    data = request.get_json()
+
+    if not data or 'localStorageData' not in data:
+        return jsonify({'error': 'No localStorage data provided'}), 400
+
+    local_data = data['localStorageData']
+    migrated_count = 0
+
     try:
-        # Baca gambar
-        with open(input_path, 'rb') as input_file:
-            input_data = input_file.read()
-        
-        # Hapus background menggunakan rembg
-        output_data = remove(input_data)
-        
-        # Simpan sebagai PNG (format yang mendukung transparansi)
-        with open(output_path, 'wb') as output_file:
-            output_file.write(output_data)
-        
-        print(f"Berhasil: {input_path} -> {output_path}")
-        return True
-    except Exception as e:
-        print(f"Error pada {input_path}: {str(e)}")
-        return False
+        for person_id_str, person_data in local_data.items():
+            person_id = int(person_id_str)
 
-def process_all_images():
-    """Proses semua gambar di folder images"""
-    
-    # Daftar folder dan file yang akan diproses
-    image_paths = [
-        # Avatar di folder avatars
-        ("images/avatars/avatar-1.jpg", "images/avatars/avatar-1.png"),
-        ("images/avatars/avatar-2.jpg", "images/avatars/avatar-2.png"),
-        ("images/avatars/avatar-3.jpg", "images/avatars/avatar-3.png"),
-        ("images/avatars/avatar-4.jpg", "images/avatars/avatar-4.png"),
-        ("images/avatars/avatar-5.jpg", "images/avatars/avatar-5.png"),
-        
-        # Hero character
-        ("images/hero-character.jpg", "images/hero-character.png"),
-        
-        # Icons
-        ("images/icon-1.jpg", "images/icon-1.png"),
-        ("images/icon-2.jpg", "images/icon-2.png"),
-        ("images/icon-3.jpg", "images/icon-3.png"),
-        ("images/icon-4.jpg", "images/icon-4.png"),
-    ]
-    
-    print("=" * 60)
-    print("Menghapus Background dari Gambar")
-    print("=" * 60)
-    print()
-    
-    success_count = 0
-    total_count = len(image_paths)
-    
-    for input_path, output_path in image_paths:
-        # Cek apakah file input ada
-        if not os.path.exists(input_path):
-            print(f"File tidak ditemukan: {input_path}")
-            continue
-        
-        # Proses gambar
-        if remove_background(input_path, output_path):
-            success_count += 1
-    
-    print()
-    print("=" * 60)
-    print(f"Selesai! {success_count}/{total_count} gambar berhasil diproses")
-    print("=" * 60)
-    print()
-    print("Catatan:")
-    print("- File output disimpan sebagai PNG dengan background transparan")
-    print("- File original (JPG) tetap tersimpan")
-    print("- Update path di HTML/JS untuk menggunakan file PNG")
+            # Check if person exists
+            person = Person.query.get(person_id)
+            if not person:
+                continue
 
-if __name__ == "__main__":
-    try:
-        process_all_images()
-    except ImportError:
-        print("=" * 60)
-        print("ERROR: Library tidak ditemukan!")
-        print("=" * 60)
-        print()
-        print("Silakan install dependencies dengan perintah:")
-        print("  pip install rembg pillow")
-        print()
-        print("Atau jika menggunakan pip3:")
-        print("  pip3 install rembg pillow")
-        print()
+            ratings = person_data.get('ratings', [])
+            messages = person_data.get('messages', [])
+
+            # Add ratings
+            for rating_value in ratings:
+                new_rating = Rating(person_id=person_id, rating=rating_value)
+                db.session.add(new_rating)
+
+            # Add messages
+            for msg_data in messages:
+                new_message = Message(
+                    person_id=person_id,
+                    message=msg_data['message'],
+                    rating=msg_data['rating'],
+                    timestamp=datetime.fromisoformat(msg_data['timestamp'])
+                )
+                db.session.add(new_message)
+
+            migrated_count += 1
+
+        db.session.commit()
+        return jsonify({
+            'message': f'Successfully migrated data for {migrated_count} people',
+            'migrated_people': migrated_count
+        }), 200
+
     except Exception as e:
-        print(f"Error: {str(e)}")
+        db.session.rollback()
+        return jsonify({'error': f'Migration failed: {str(e)}'}), 500
+
+# Serve static files
+@app.route('/')
+def serve_index():
+    return app.send_static_file('index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    return app.send_static_file(path)
+
+if __name__ == '__main__':
+    init_db()
+    print("RateUs Flask API Server")
+    print("Database initialized and ready")
+    print("Starting server on http://localhost:5000")
+    app.run(debug=True, host='0.0.0.0', port=5000)
