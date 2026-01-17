@@ -95,93 +95,36 @@ function smoothScrollTo(selector) {
     }
 }
 
-// ==================== API FUNCTIONS ====================
-const API_BASE_URL = window.location.origin + '/api';
-
-async function apiCall(endpoint, options = {}) {
-    try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ...options.headers
-            },
-            ...options
-        });
-
-        if (!response.ok) {
-            throw new Error(`API call failed: ${response.status} ${response.statusText}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('API call error:', error);
-        showToast('Terjadi kesalahan saat mengakses server', 'error');
-        throw error;
-    }
+// ==================== STORAGE FUNCTIONS ====================
+function getStorageData() {
+    const data = localStorage.getItem('ratingMessages');
+    return data ? JSON.parse(data) : {};
 }
 
-async function getPeopleData() {
-    return await apiCall('/people');
+function saveStorageData(data) {
+    localStorage.setItem('ratingMessages', JSON.stringify(data));
 }
 
-async function getPersonData(personId) {
-    try {
-        const [ratings, messages] = await Promise.all([
-            apiCall(`/ratings/${personId}`),
-            apiCall(`/messages/${personId}`)
-        ]);
-
-        return {
-            ratings: ratings.map(r => r.rating),
-            messages: messages
-        };
-    } catch (error) {
-        console.error('Error fetching person data:', error);
-        return { ratings: [], messages: [] };
-    }
+function getPersonData(personId) {
+    const allData = getStorageData();
+    return allData[personId] || { ratings: [], messages: [] };
 }
 
-async function saveRatingAndMessage(personId, rating, message) {
-    try {
-        await apiCall('/ratings', {
-            method: 'POST',
-            body: JSON.stringify({
-                person_id: personId,
-                rating: rating,
-                message: sanitizeInput(message)
-            })
-        });
-        return true;
-    } catch (error) {
-        console.error('Error saving rating and message:', error);
-        return false;
+function saveRatingAndMessage(personId, rating, message) {
+    const allData = getStorageData();
+    if (!allData[personId]) {
+        allData[personId] = { ratings: [], messages: [] };
     }
-}
-
-async function migrateLocalStorageData() {
-    const localData = localStorage.getItem('ratingMessages');
-    if (!localData) {
-        console.log('No localStorage data to migrate');
-        return;
-    }
-
-    try {
-        const parsedData = JSON.parse(localData);
-        await apiCall('/migrate', {
-            method: 'POST',
-            body: JSON.stringify({
-                localStorageData: parsedData
-            })
-        });
-
-        showToast('Data berhasil dimigrasikan ke database!', 'success');
-        // Clear localStorage after successful migration
-        localStorage.removeItem('ratingMessages');
-        console.log('localStorage data migrated and cleared');
-    } catch (error) {
-        console.error('Migration failed:', error);
-        showToast('Gagal memigrasikan data', 'error');
-    }
+    
+    const timestamp = new Date().toISOString();
+    allData[personId].ratings.push(rating);
+    allData[personId].messages.push({
+        message: sanitizeInput(message),
+        rating: rating,
+        timestamp: timestamp
+    });
+    
+    saveStorageData(allData);
 }
 
 function calculateAverageRating(ratings) {
@@ -191,23 +134,23 @@ function calculateAverageRating(ratings) {
 }
 
 // ==================== STATS FUNCTIONS ====================
-async function updateStats() {
-    try {
-        const stats = await apiCall('/stats');
-
-        const totalPeopleEl = document.getElementById('totalPeople');
-        const totalRatingsEl = document.getElementById('totalRatings');
-        const totalMessagesEl = document.getElementById('totalMessages');
-
-        if (totalPeopleEl) totalPeopleEl.textContent = stats.total_people;
-        if (totalRatingsEl) animateNumber(totalRatingsEl, stats.total_ratings);
-        if (totalMessagesEl) animateNumber(totalMessagesEl, stats.total_messages);
-    } catch (error) {
-        console.error('Error updating stats:', error);
-        // Fallback to static data
-        const totalPeopleEl = document.getElementById('totalPeople');
-        if (totalPeopleEl) totalPeopleEl.textContent = people.length;
-    }
+function updateStats() {
+    const allData = getStorageData();
+    let totalRatings = 0;
+    let totalMessages = 0;
+    
+    Object.values(allData).forEach(personData => {
+        totalRatings += personData.ratings.length;
+        totalMessages += personData.messages.length;
+    });
+    
+    const totalPeopleEl = document.getElementById('totalPeople');
+    const totalRatingsEl = document.getElementById('totalRatings');
+    const totalMessagesEl = document.getElementById('totalMessages');
+    
+    if (totalPeopleEl) totalPeopleEl.textContent = people.length;
+    if (totalRatingsEl) animateNumber(totalRatingsEl, totalRatings);
+    if (totalMessagesEl) animateNumber(totalMessagesEl, totalMessages);
 }
 
 function animateNumber(element, target) {
@@ -228,59 +171,53 @@ function animateNumber(element, target) {
 }
 
 // ==================== LEADERBOARD ====================
-async function displayLeaderboard() {
+function displayLeaderboard() {
     const leaderboardList = document.getElementById('leaderboardList');
     if (!leaderboardList) return;
-
-    try {
-        // Get data for all people
-        const peopleWithData = await Promise.all(people.map(async (person) => {
-            const personData = await getPersonData(person.id);
-            const avgRating = parseFloat(calculateAverageRating(personData.ratings)) || 0;
-            const totalRatings = personData.ratings.length;
-            return { ...person, avgRating, totalRatings };
-        }));
-
-        // Sort by average rating (descending), then by total ratings
-        peopleWithData.sort((a, b) => {
-            if (b.avgRating !== a.avgRating) return b.avgRating - a.avgRating;
-            return b.totalRatings - a.totalRatings;
-        });
-
-        leaderboardList.innerHTML = '';
-
-        peopleWithData.forEach((person, index) => {
-            const rankClass = index < 3 ? `rank-${index + 1}` : '';
-            const starsHtml = person.avgRating > 0 ? '<i class="fas fa-star" style="color: var(--gold);"></i>'.repeat(Math.round(person.avgRating)) : '-';
-
-            const item = document.createElement('div');
-            item.className = `leaderboard-item ${rankClass}`;
-            item.innerHTML = `
-                <div class="rank-badge">${index + 1}</div>
-                <div class="leaderboard-avatar">
-                    <img src="${person.avatar}" alt="${person.name}">
+    
+    const peopleWithRatings = people.map(person => {
+        const personData = getPersonData(person.id);
+        const avgRating = parseFloat(calculateAverageRating(personData.ratings)) || 0;
+        const totalRatings = personData.ratings.length;
+        return { ...person, avgRating, totalRatings };
+    });
+    
+    // Sort by average rating (descending), then by total ratings
+    peopleWithRatings.sort((a, b) => {
+        if (b.avgRating !== a.avgRating) return b.avgRating - a.avgRating;
+        return b.totalRatings - a.totalRatings;
+    });
+    
+    leaderboardList.innerHTML = '';
+    
+    peopleWithRatings.forEach((person, index) => {
+        const rankClass = index < 3 ? `rank-${index + 1}` : '';
+        const starsHtml = person.avgRating > 0 ? '<i class="fas fa-star" style="color: var(--gold);"></i>'.repeat(Math.round(person.avgRating)) : '-';
+        
+        const item = document.createElement('div');
+        item.className = `leaderboard-item ${rankClass}`;
+        item.innerHTML = `
+            <div class="rank-badge">${index + 1}</div>
+            <div class="leaderboard-avatar">
+                <img src="${person.avatar}" alt="${person.name}">
+            </div>
+            <div class="leaderboard-info">
+                <div class="leaderboard-name">${person.name}</div>
+                <div class="leaderboard-stats">
+                    <span><i class="fas fa-star" style="color: var(--gold);"></i> ${person.totalRatings} rating</span>
                 </div>
-                <div class="leaderboard-info">
-                    <div class="leaderboard-name">${person.name}</div>
-                    <div class="leaderboard-stats">
-                        <span><i class="fas fa-star" style="color: var(--gold);"></i> ${person.totalRatings} rating</span>
-                    </div>
-                </div>
-                <div class="leaderboard-rating">
-                    <span class="rating-stars">${starsHtml}</span>
-                    <span class="rating-number">${person.avgRating > 0 ? person.avgRating : '-'}</span>
-                </div>
-            `;
-            leaderboardList.appendChild(item);
-        });
-    } catch (error) {
-        console.error('Error displaying leaderboard:', error);
-        leaderboardList.innerHTML = '<p class="error-message">Gagal memuat leaderboard</p>';
-    }
+            </div>
+            <div class="leaderboard-rating">
+                <span class="rating-stars">${starsHtml}</span>
+                <span class="rating-number">${person.avgRating > 0 ? person.avgRating : '-'}</span>
+            </div>
+        `;
+        leaderboardList.appendChild(item);
+    });
 }
 
 // ==================== PEOPLE LIST ====================
-async function displayPeople(filter = '') {
+function displayPeople(filter = '') {
     const peopleList = document.getElementById('peopleList');
     const noResults = document.getElementById('noResults');
 
@@ -299,15 +236,11 @@ async function displayPeople(filter = '') {
 
     if (noResults) noResults.style.display = 'none';
 
-    // Get data for all filtered people
-    const peopleWithData = await Promise.all(filteredPeople.map(async (person, index) => {
-        const personData = await getPersonData(person.id);
+    filteredPeople.forEach((person, index) => {
+        const personData = getPersonData(person.id);
         const avgRating = calculateAverageRating(personData.ratings);
         const messageCount = personData.messages.length;
-        return { person, avgRating, messageCount, index };
-    }));
-
-    peopleWithData.forEach(({ person, avgRating, messageCount, index }) => {
+        
         const personCard = document.createElement('div');
         personCard.className = 'person-card';
         personCard.style.animationDelay = `${index * 0.1}s`;
@@ -401,7 +334,7 @@ function openProfileModal(personId) {
     // Tampilkan rating rata-rata
     const avgRating = calculateAverageRating(personData.ratings);
     if (avgRating > 0) {
-        const stars = '⭐'.repeat(Math.round(parseFloat(avgRating)));
+        const stars = '⭐'.repeat(Math.round(parseFloat(avgRating))); 
         averageRating.innerHTML = `<div class="rating-display">${stars} <span>${avgRating}/5.0</span></div>`;
     } else {
         averageRating.innerHTML = '<p style="color: var(--text-muted);">Belum ada rating</p>';
