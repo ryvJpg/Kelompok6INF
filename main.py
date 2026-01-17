@@ -206,9 +206,12 @@ def serve_index():
 def serve_static(path):
     return app.send_static_file(path)
 
+# Initialize database on app startup
+init_db()
+
 if __name__ == '__main__':
-    init_db()
     print("RateUs Flask API Server")
     print("Database initialized and ready")
-    print("Starting server on http://localhost:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    print(f"Starting server on port {port}")
+    app.run(debug=False, host='0.0.0.0', port=port)
