@@ -202,6 +202,10 @@ def migrate_data():
 def serve_index():
     return app.send_static_file('index.html')
 
+@app.route('/infographic.html')
+def serve_infographic():
+    return app.send_static_file('infographic.html')
+
 @app.route('/<path:path>')
 def serve_static(path):
     return app.send_static_file(path)

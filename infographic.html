@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dampak Sosial Informatika - Kelompok 6 INF</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="SI.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Introduction Section -->
+    <section class="introduction-section">
+        <div class="intro-container">
+            <div class="intro-content">
+                <div class="intro-badge">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>INFOGRAFIS</span>
+                </div>
+                <h1 class="intro-title">Dampak Sosial Informatika</h1>
+                <p class="intro-description">
+                    Jelajahi bagaimana teknologi informatika mempengaruhi kehidupan sosial masyarakat modern.
+                    Infografis ini menunjukkan berbagai aspek dampak positif dan negatif dari perkembangan teknologi informasi.
+                </p>
+                <div class="intro-features">
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Konektivitas Sosial</h3>
+                        <p>Meningkatkan interaksi antar individu dan komunitas</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>Transformasi Digital</h3>
+                        <p>Mengubah cara kita bekerja, belajar, dan berkomunikasi</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Tantangan Etika</h3>
+                        <p>Menghadapi isu privasi dan keamanan digital</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-globe"></i>
+                        <h3>Dampak Global</h3>
+                        <p>Mempengaruhi ekonomi, politik, dan budaya dunia</p>
+                    </div>
+                </div>
+                <div class="intro-action">
+                    <button class="btn-intro" onclick="smoothScrollTo('#infographic')">
+                        <i class="fas fa-arrow-down"></i> Lihat Infografis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">
+                <i class="fas fa-star"></i>
+                <span>RateUs</span>
+            </div>
+        </div>
+        <div class="nav-center">
+            <a href="index.html" class="nav-link">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="index.html#leaderboard" class="nav-link">
+                <i class="fas fa-trophy"></i> Leaderboard
+            </a>
+            <a href="index.html#peopleSection" class="nav-link">
+                <i class="fas fa-users"></i> Daftar
+            </a>
+            <a href="#infographic" class="nav-link active">
+                <i class="fas fa-chart-bar"></i> Infografis
+            </a>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Infographic Section -->
+    <section class="content-section" id="infographic">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i> Infografis Lengkap
+                </h2>
+                <p class="section-subtitle">Klik gambar untuk memperbesar dan melihat detail</p>
+            </div>
+
+            <div class="infographic-container">
+                <img src="images/DASI.png" alt="Infografis Dampak Sosial Informatika - Menampilkan berbagai aspek positif dan negatif teknologi informatika terhadap masyarakat" class="infographic-image" id="infographicImg">
+            </div>
+
+            <!-- Infographic Details -->
+            <div class="infographic-details">
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <h3>Dampak Positif</h3>
+                        <ul>
+                            <li>gaada, gaada positif nya dari liat hp kelamaan</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-minus-circle"></i>
+                        </div>
+                        <h3>Dampak Negatif</h3>
+                        <ul>
+                            <li>Ketergantungan teknologi berlebihan</li>
+                            <li>Mata rusak</li>
+                            <li>Gabisa jauh dari hp</li>
+                            <li>Kesenjangan digital</li>
+                            <li>Dampak kesehatan mental</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h3>Solusi & Mitigasi</h3>
+                        <ul>
+                            <li>Banyakin gaul</li>
+                            <li>Main keluar</li>
+                            <li>Batasin main hp</li>
+                            <li>Jangan begadang main hp</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-star"></i>
+                        <span>RateUs</span>
+                    </div>
+                    <p>Sistem rating dan sensor kata kasar.
+
+                        kasih kita nilai 100
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <a href="index.html#leaderboard"><i class="fas fa-trophy"></i> Leaderboard</a>
+                    <a href="index.html#peopleSection"><i class="fas fa-users"></i> Daftar</a>
+                    <a href="#infographic"><i class="fas fa-chart-bar"></i> Infografis</a>
+                </div>
+                <div class="footer-team">
+                    <h4>Kelompok 6</h4>
+                    <p>Jihan, Ahmad, Syifa, Bima, Azkel, Ryu</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Kelompok 6 INF. All rights reserved.</p>
+                <div class="project-info">
+                    <p>Website ini dibuat sebagai tugas inf ryu</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <div class="lightbox-controls">
+            <button class="lightbox-btn" onclick="zoomIn()" title="Zoom In">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button class="lightbox-btn" onclick="zoomOut()" title="Zoom Out">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button class="lightbox-btn" onclick="resetZoom()" title="Reset Zoom">
+                <i class="fas fa-expand"></i>
+            </button>
+        </div>
+        <img class="lightbox-content" id="lightboxImage">
+        <div class="lightbox-caption" id="caption">
+            <h3>Dampak Sosial Informatika</h3>
+            <p>Infografis ini menggambarkan berbagai aspek dampak teknologi informatika terhadap kehidupan sosial masyarakat</p>
+        </div>
+        <div class="zoom-instruction">
+            <i class="fas fa-mouse-pointer"></i> Klik di luar gambar atau tekan ESC untuk menutup
+            <span class="zoom-hint">| Gunakan kontrol zoom untuk detail lebih baik</span>
+        </div>
+    </div>
+
+    <style>
+        /* Infographic specific styles */
+        .infographic-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px var(--shadow-color);
+            margin: 40px 0;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .infographic-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
+        }
+
+        .infographic-image {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid var(--border-color);
+        }
+
+        .infographic-image:hover {
+            transform: scale(1.02) translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .infographic-details {
+            margin-top: 50px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .detail-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px var(--shadow-color);
+        }
+
+        .detail-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2em;
+            color: white;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .detail-card h3 {
+            color: var(--text-primary);
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .detail-card ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .detail-card li {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .detail-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        /* Enhanced Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            max-width: 95%;
+            max-height: 85vh;
+            margin-top: 5vh;
+            animation: zoomIn 0.4s ease;
+            cursor: grab;
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-content:active {
+            cursor: grabbing;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 2001;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close:hover {
+            color: #fff;
+            background: rgba(239, 68, 68, 0.8);
+            transform: scale(1.1);
+        }
+
+        .lightbox-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2001;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lightbox-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-btn:hover {
+            background: var(--accent-primary);
+            transform: scale(1.1);
+        }
+
+        .lightbox-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+            color: #fff;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-caption h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .lightbox-caption p {
+            margin: 0;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .zoom-instruction {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #ccc;
+            font-size: 16px;
+            z-index: 2001;
+        }
+
+        .zoom-hint {
+            display: none;
+            margin-left: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .detail-card {
+                padding: 20px;
+            }
+
+            .detail-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5em;
+            }
+
+            .infographic-container {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .lightbox-controls {
+                top: 10px;
+                left: 10px;
+            }
+
+            .lightbox-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1em;
+            }
+
+            .lightbox-caption {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .lightbox-caption h3 {
+                font-size: 1.2em;
+            }
+
+            .zoom-instruction {
+                font-size: 14px;
+            }
+
+            .zoom-hint {
+                display: inline;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lightbox-content {
+                max-width: 98%;
+                max-height: 75vh;
+                margin-top: 10vh;
+            }
+
+            .lightbox-controls {
+                display: none; /* Hide controls on very small screens */
+            }
+
+            .zoom-hint {
+                display: none;
+            }
+        }
+    </style>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', currentTheme);
+        updateThemeIcon();
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+        });
+
+        function updateThemeIcon() {
+            const currentTheme = body.getAttribute('data-theme');
+            const icon = themeToggle.querySelector('i');
+
+            if (currentTheme === 'dark') {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        }
+
+        // Smooth scroll function
+        function smoothScrollTo(target) {
+            const element = document.querySelector(target);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        // Enhanced Lightbox functionality
+        const imgElement = document.getElementById('infographicImg');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImage');
+        const captionText = document.getElementById('caption');
+
+        let scale = 1;
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+
+        imgElement.onclick = function() {
+            lightbox.style.display = 'block';
+            lightboxImg.src = this.src;
+            resetZoom();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+            resetZoom();
+            document.body.style.overflow = 'auto';
+        }
+
+        function zoomIn() {
+            scale = Math.min(scale + 0.25, 3);
+            updateZoom();
+        }
+
+        function zoomOut() {
+            scale = Math.max(scale - 0.25, 0.5);
+            updateZoom();
+        }
+
+        function resetZoom() {
+            scale = 1;
+            lightboxImg.style.transform = 'scale(1) translate(0, 0)';
+            lightboxImg.style.cursor = 'grab';
+        }
+
+        function updateZoom() {
+            lightboxImg.style.transform = `scale(${scale})`;
+            lightboxImg.style.cursor = scale > 1 ? 'grab' : 'zoom-in';
+        }
+
+        // Mouse wheel zoom
+        lightboxImg.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                zoomIn();
+            } else {
+                zoomOut();
+            }
+        });
+
+        // Drag functionality
+        lightboxImg.addEventListener('mousedown', function(e) {
+            if (scale > 1) {
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                initialX = lightboxImg.offsetLeft;
+                initialY = lightboxImg.offsetTop;
+                lightboxImg.style.cursor = 'grabbing';
+            }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging && scale > 1) {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                lightboxImg.style.transform = `scale(${scale}) translate(${dx}px, ${dy}px)`;
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+            if (scale > 1) {
+                lightboxImg.style.cursor = 'grab';
+            }
+        });
+
+        // Close lightbox when clicking outside the image
+        lightbox.onclick = function(event) {
+            if (event.target === lightbox) {
+                closeLightbox();
+            }
+        }
+
+        // Close lightbox when pressing ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && lightbox.style.display === 'block') {
+                closeLightbox();
+            }
+        });
+
+        // Toast notification system
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'toastSlideOut 0.3s ease';
+                setTimeout(() => {
+                    toastContainer.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.detail-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add loading animation to infographic
+            const infographicImg = document.getElementById('infographicImg');
+            infographicImg.style.opacity = '0';
+            infographicImg.style.transition = 'opacity 0.5s ease';
+
+            infographicImg.onload = function() {
+                this.style.opacity = '1';
+            };
+
+            // If image is already loaded
+            if (infographicImg.complete) {
+                infographicImg.style.opacity = '1';
+            }
+        });
+    </script>
+</body>
+</html>
